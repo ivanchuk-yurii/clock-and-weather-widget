@@ -1,0 +1,11 @@
+<label>
+  Timezone
+
+  <select [value]="value()" (change)="onChange($event)">
+    <option value=""></option>
+
+    @for (option of options; track option) {
+      <option [value]="option">{{ option }}</option>
+    }
+  </select>
+</label>

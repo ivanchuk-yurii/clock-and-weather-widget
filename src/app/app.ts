@@ -10,12 +10,13 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Weather } from './weather/weather';
+import { Timezone } from './timezone/timezone';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.scss',
-  imports: [CommonModule, Weather],
+  imports: [CommonModule, Weather, Timezone],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App implements OnInit, OnDestroy {
@@ -27,16 +28,32 @@ export class App implements OnInit, OnDestroy {
   readonly largeMarkers = this.createMarkers(4);
 
   now = signal(new Date());
+  timezone = signal('');
 
-  date = computed(() => {
-    const now = this.now();
-    const weekday = now.toLocaleDateString(undefined, { weekday: 'short' });
-    const date = now.toLocaleDateString(undefined, {
+  dateParts = computed(() => {
+    const parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone: this.timezone() || undefined,
       year: 'numeric',
       month: 'short',
-    });
+      weekday: 'short',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true,
+    }).formatToParts(this.now());
 
-    return `${weekday}, ${date}`;
+    return parts.reduce(
+      (acc, part) => {
+        acc[part.type] = part.value;
+        return acc;
+      },
+      {} as Record<Intl.DateTimeFormatPartTypes, string>,
+    );
+  });
+
+  date = computed(() => {
+    const parts = this.dateParts();
+    return `${parts.weekday}, ${parts.month} ${parts.year}`;
   });
 
   secondDeg = computed(() => {
@@ -46,14 +63,14 @@ export class App implements OnInit, OnDestroy {
   });
 
   minuteDeg = computed(() => {
-    const now = this.now();
-    const minutes = now.getMinutes() + now.getSeconds() / 60;
+    const parts = this.dateParts();
+    const minutes = +parts.minute + +parts.second / 60;
     return minutes * 6;
   });
 
   hourDeg = computed(() => {
-    const now = this.now();
-    const hours = (now.getHours() % 12) + now.getMinutes() / 60;
+    const parts = this.dateParts();
+    const hours = +parts.hour + +parts.minute / 60;
     return hours * 30;
   });
 

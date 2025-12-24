@@ -1,6 +1,12 @@
 @use '../styles/colors' as *;
 @use '../styles/mixins' as *;
 
+.timezone {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
 .clock {
   $size: 500px;
 
