@@ -9,12 +9,13 @@ import {
   signal,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Weather } from './weather/weather';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.scss',
-  imports: [CommonModule],
+  imports: [CommonModule, Weather],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App implements OnInit, OnDestroy {

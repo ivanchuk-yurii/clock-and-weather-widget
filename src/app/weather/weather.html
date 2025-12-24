@@ -1,0 +1,11 @@
+@if (weather$ | async; as weather) {
+  <div class="content">
+    @if (weather?.weather?.[0]?.icon; as icon) {
+      <img [src]="iconUrl + icon + '.png'" alt="weather" class="icon" />
+    }
+
+    @if (weather?.main?.temp; as temp) {
+      <span>{{ temp }}°C</span>
+    }
+  </div>
+}

@@ -1,0 +1,16 @@
+@use '../../styles/mixins' as *;
+
+.content {
+  @include widget;
+
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.icon {
+  $size: 20px;
+
+  width: $size;
+  height: $size;
+}
