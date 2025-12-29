@@ -5,7 +5,7 @@
     }
 
     @if (weather?.main?.temp; as temp) {
-      <span>{{ temp }}°C</span>
+      <span>{{ temp | number:'1.0-0' }}°C</span>
     }
   </div>
 }

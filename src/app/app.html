@@ -2,60 +2,10 @@
   <app-timezone [(value)]="timezone"></app-timezone>
 </div>
 
-<div class="clock">
-  <div class="circle">
-    <div class="circle relative">
-      @for (deg of smallMarkers; track deg) {
-        <ng-container
-          *ngTemplateOutlet="marker; context: { $implicit: deg, type: 'marker-small' }"
-        />
-      }
+<div class="relative">
+  <app-clock [date]="now()" [timezone]="timezone()"></app-clock>
 
-      @for (deg of mediumMarkers; track deg) {
-        <ng-container
-          *ngTemplateOutlet="marker; context: { $implicit: deg, type: 'marker-medium' }"
-        />
-      }
-
-      @for (deg of largeMarkers; track deg) {
-        <ng-container
-          *ngTemplateOutlet="marker; context: { $implicit: deg, type: 'marker-large' }"
-        />
-      }
-
-      <ng-container
-        *ngTemplateOutlet="hand; context: { $implicit: secondDeg(), type: 'hand-second' }"
-      />
-      <ng-container
-        *ngTemplateOutlet="hand; context: { $implicit: minuteDeg(), type: 'hand-minute' }"
-      />
-      <ng-container
-        *ngTemplateOutlet="hand; context: { $implicit: hourDeg(), type: 'hand-hour' }"
-      />
-
-      <div class="dot"></div>
-
-      <div class="date">
-        {{ date() }}
-      </div>
-
-      <div class="weather">
-        <app-weather></app-weather>
-      </div>
-    </div>
+  <div class="weather">
+    <app-weather></app-weather>
   </div>
 </div>
-
-<ng-template #hand let-deg let-type="type">
-  <div
-    class="hand"
-    [class]="type"
-    [style.transform]="'translateX(-50%) rotate(' + (deg - 180) + 'deg)'"
-  ></div>
-</ng-template>
-
-<ng-template #marker let-deg let-type="type">
-  <div class="marker-container" [style.transform]="'translateX(-50%) rotate(' + deg + 'deg)'">
-    <div [class]="type"></div>
-  </div>
-</ng-template>
